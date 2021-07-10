@@ -1,11 +1,14 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
-from django.views import generic
-from animal_shelters.models import Owner
+from django.views import generic, View
+
+from animal_shelters.forms import AccountForm
+
 
 # Create your views here.
-from django.views.generic import CreateView
+from animal_shelters.models import Owner
 
 
 class SignUpView(generic.CreateView):
@@ -14,8 +17,47 @@ class SignUpView(generic.CreateView):
     template_name = 'registration/signup.html'
 
 
-class AccountView(generic.CreateView):
-    model = Owner
-    fields = '__all__'
-    success_url = reverse_lazy('account')
-    template_name = 'owner_form.html'
+class AccountView(View):
+    def get(self, request):
+        if Owner.objects.filter(user_id=self.request.user.id).exists():
+            account = Owner.objects.get(user_id=self.request.user.id)
+            form = AccountForm(instance=account)
+            return render(request, 'owner_form.html', {'form': form})
+        else:
+            form = AccountForm()
+            return render(request, 'owner_form.html', {'form': form})
+
+    def post(self, request):
+        form = AccountForm(request.POST)
+        if form.is_valid():
+            user = self.request.user.id
+            street = form.cleaned_data['street']
+            number = form.cleaned_data['number']
+            city = form.cleaned_data['city']
+            postal_code = form.cleaned_data['postal_code']
+            shelter = form.cleaned_data['shelter']
+            capacity = form.cleaned_data['capacity']
+            opening_hours = form.cleaned_data['opening_hours']
+            phone = form.cleaned_data['phone']
+            email = form.cleaned_data['email']
+            about = form.cleaned_data['about']
+            regulations = form.cleaned_data['regulations']
+            donations = form.cleaned_data['donations']
+            if Owner.objects.filter(user_id=self.request.user.id).exists():
+                Owner.objects.filter(user_id=self.request.user.id).update(user_id=user, street=street, number=number,
+                                city=city, postal_code=postal_code, shelter=shelter, capacity=capacity,
+                                opening_hours=opening_hours, phone=phone, email=email, about=about,
+                                regulations=regulations, donations=donations)
+            else:
+                Owner.objects.create(user_id=user, street=street, number=number, city=city, postal_code=postal_code,
+                                    shelter=shelter, capacity=capacity, opening_hours=opening_hours, phone=phone,
+                                    email=email, about=about, regulations=regulations, donations=donations)
+            return HttpResponseRedirect('account')
+
+
+
+# class AccountView(generic.CreateView):
+#     model = Owner
+#     fields = '__all__'
+#     success_url = reverse_lazy('account')
+#     template_name = 'owner_form.html'
