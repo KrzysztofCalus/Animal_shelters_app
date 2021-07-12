@@ -18,6 +18,7 @@ SEX = (
 
 class Owner(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    shelter_name = models.CharField(max_length=256, default='')
     street = models.CharField(max_length=256)
     number = models.CharField(max_length=6)
     city = models.CharField(max_length=64)
