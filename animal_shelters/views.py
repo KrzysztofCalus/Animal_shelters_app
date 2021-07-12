@@ -4,8 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views import generic, View
 
-from animal_shelters.forms import AccountForm
-
+from animal_shelters.forms import AccountForm, SheltersForm
 
 # Create your views here.
 from animal_shelters.models import Owner
@@ -45,19 +44,29 @@ class AccountView(View):
             donations = form.cleaned_data['donations']
             if Owner.objects.filter(user_id=self.request.user.id).exists():
                 Owner.objects.filter(user_id=self.request.user.id).update(user_id=user, street=street, number=number,
-                                city=city, postal_code=postal_code, shelter=shelter, capacity=capacity,
-                                opening_hours=opening_hours, phone=phone, email=email, about=about,
-                                regulations=regulations, donations=donations)
+                                                                          city=city, postal_code=postal_code,
+                                                                          shelter=shelter, capacity=capacity,
+                                                                          opening_hours=opening_hours, phone=phone,
+                                                                          email=email, about=about,
+                                                                          regulations=regulations, donations=donations)
             else:
                 Owner.objects.create(user_id=user, street=street, number=number, city=city, postal_code=postal_code,
-                                    shelter=shelter, capacity=capacity, opening_hours=opening_hours, phone=phone,
-                                    email=email, about=about, regulations=regulations, donations=donations)
+                                     shelter=shelter, capacity=capacity, opening_hours=opening_hours, phone=phone,
+                                     email=email, about=about, regulations=regulations, donations=donations)
             return HttpResponseRedirect('account')
 
 
+class SheltersView(View):
+    def get(self, request):
+        shelters = Owner.objects.filter(shelter=True)
+        form = SheltersForm()
+        return render(request, 'shelters.html', {"shelters": shelters,
+                                                 "form": form})
 
-# class AccountView(generic.CreateView):
-#     model = Owner
-#     fields = '__all__'
-#     success_url = reverse_lazy('account')
-#     template_name = 'owner_form.html'
+    def post(self, request):
+        form = SheltersForm(request.POST)
+        if form.is_valid():
+            city = form.cleaned_data['city']
+            shelters = Owner.objects.filter(city=city).filter(shelter=True)
+        return render(request, 'shelters.html', {"shelters": shelters,
+                                                 "form": form})

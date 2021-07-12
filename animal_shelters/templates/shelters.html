@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+<h2>Shelters list</h2>
+<body>
+<form action="" method="post">
+  {% csrf_token %}
+  {{ form }}
+  <input type="submit" value="Search"><br>
+  <br>
+</form>
+<table style="width:100%">
+  <tr>
+    <th>Name</th>
+    <th>City</th>
+    <th>Postal Code</th>
+    <th>Street</th>
+    <th>Number</th>
+    <th>Opening Hours</th>
+    <th>Phone</th>
+    <th>Email</th>
+  </tr>
+    {% for shelter in shelters %}
+  <tr>
+    <td>{{ shelter.shelter_name }}</td>
+    <td>{{ shelter.city }}</td>
+    <td>{{ shelter.postal_code }}</td>
+    <td>{{ shelter.street }}</td>
+    <td>{{ shelter.number }}</td>
+    <td>{{ shelter.opening_hours }}</td>
+    <td>{{ shelter.phone }}</td>
+    <td>{{ shelter.email }}</td>
+  </tr>
+    {% endfor %}
+</table>
+</body>
+{% endblock %}
