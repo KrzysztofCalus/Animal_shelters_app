@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+<h2>Animals</h2>
+<body>
+<table style="width:100%">
+  <tr>
+    <th>Name</th>
+    <th>Sex</th>
+    <th>Birth Date</th>
+    <th>Colour</th>
+    <th>Distinguishing Marks</th>
+    <th>Weight</th>
+    <th>Size</th>
+    <th>Description</th>
+    <th>Animal Type</th>
+    <th>Picture</th>
+  </tr>
+    {% for animal in animals %}
+  <tr>
+    <td>{{ animal.name }}</td>
+    <td>{{ animal.sex }}</td>
+    <td>{{ animal.birth_date }}</td>
+    <td>{{ animal.colour }}</td>
+    <td>{{ animal.distinguishing_marks }}</td>
+    <td>{{ animal.weight }}</td>
+    <td>{{ animal.size }}</td>
+    <td>{{ animal.description }}</td>
+    <td>{{ animal.animal_type }}</td>
+    <td>{{ animal.picture }}</td>
+  </tr>
+    {% endfor %}
+</table>
+</body>
+{% endblock %}

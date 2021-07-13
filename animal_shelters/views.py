@@ -7,7 +7,7 @@ from django.views import generic, View
 from animal_shelters.forms import AccountForm, SheltersForm
 
 # Create your views here.
-from animal_shelters.models import Owner
+from animal_shelters.models import Owner, AnimalOwner, Animal
 
 
 class SignUpView(generic.CreateView):
@@ -30,6 +30,7 @@ class AccountView(View):
         form = AccountForm(request.POST)
         if form.is_valid():
             user = self.request.user.id
+            shelter_name = form.cleaned_data['shelter_name']
             street = form.cleaned_data['street']
             number = form.cleaned_data['number']
             city = form.cleaned_data['city']
@@ -48,11 +49,13 @@ class AccountView(View):
                                                                           shelter=shelter, capacity=capacity,
                                                                           opening_hours=opening_hours, phone=phone,
                                                                           email=email, about=about,
-                                                                          regulations=regulations, donations=donations)
+                                                                          regulations=regulations, donations=donations,
+                                                                          shelter_name=shelter_name)
             else:
                 Owner.objects.create(user_id=user, street=street, number=number, city=city, postal_code=postal_code,
                                      shelter=shelter, capacity=capacity, opening_hours=opening_hours, phone=phone,
-                                     email=email, about=about, regulations=regulations, donations=donations)
+                                     email=email, about=about, regulations=regulations, donations=donations,
+                                     shelter_name=shelter_name)
             return HttpResponseRedirect('account')
 
 
@@ -70,3 +73,14 @@ class SheltersView(View):
             shelters = Owner.objects.filter(city=city).filter(shelter=True)
         return render(request, 'shelters.html', {"shelters": shelters,
                                                  "form": form})
+
+
+class AddShelterAnimalsView(View):
+    pass
+
+
+class ShelterAnimalsView(View):
+    def get(self, request, shelter_id):
+        t = Owner.objects.get(id=shelter_id)
+        animals = t.animal_set.all()
+        return render(request, 'shelter_animals.html', {'animals': animals})
