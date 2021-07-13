@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic.base import TemplateView
-from animal_shelters.views import SignUpView, AccountView, SheltersView
+from animal_shelters.views import SignUpView, AccountView, SheltersView, AddShelterAnimalsView, ShelterAnimalsView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,4 +25,6 @@ urlpatterns = [
     path('accounts/signup/', SignUpView.as_view(), name='signup'),
     path('account', AccountView.as_view(), name='account'),
     path('shelters', SheltersView.as_view(), name='shelters'),
+    path('shelter/animals/add', AddShelterAnimalsView.as_view(), name='add-shelter-animals'),
+    path('shelter/animals/<int:shelter_id>', ShelterAnimalsView.as_view(), name='shelter-animals')
 ]

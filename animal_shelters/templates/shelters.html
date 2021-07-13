@@ -41,7 +41,7 @@ tr:nth-child(even) {
   </tr>
     {% for shelter in shelters %}
   <tr>
-    <td>{{ shelter.shelter_name }}</td>
+    <td><a href='/shelter/animals/{{ shelter.id }}'>{{ shelter.shelter_name }}</a></td>
     <td>{{ shelter.city }}</td>
     <td>{{ shelter.postal_code }}</td>
     <td>{{ shelter.street }}</td>
