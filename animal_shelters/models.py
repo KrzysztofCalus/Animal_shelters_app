@@ -39,21 +39,25 @@ class Owner(models.Model):
 class AnimalType(models.Model):
     type = models.CharField(max_length=128)
     breed = models.CharField(max_length=128)
-    picture = models.FileField()
+    picture = models.FileField(null=True, blank=True)
     description = models.TextField()
     FCI_number = models.IntegerField()
+
+    def __str__(self):
+        return f'Type: {self.type}; Breed: {self.breed}; FCI number: {self.FCI_number}'
 
 
 class Food(models.Model):
     name = models.CharField(max_length=128)
     age_start = models.PositiveIntegerField()
     age_end = models.PositiveIntegerField()
-    weight_start = models.PositiveIntegerField
+    weight_start = models.PositiveIntegerField(default=0)
     weight_end = models.PositiveIntegerField()
     amount = models.DecimalField(max_digits=4, decimal_places=2)
 
     def __str__(self):
-        return self.name
+        return f'{self.name}; Age range: {self.age_start}-{self.age_end}; Weight range: {self.weight_start}-' \
+               f'{self.weight_end}; Amount: {self.amount}'
 
 
 class Animal(models.Model):
@@ -66,9 +70,9 @@ class Animal(models.Model):
     weight = models.DecimalField(max_digits=4, decimal_places=2)
     size = models.CharField(max_length=128, choices=ANIMAL_SIZE)
     description = models.TextField()
-    animal_type = models.ForeignKey(AnimalType, on_delete=models.CASCADE)
-    picture = models.FileField()
-    food = models.ForeignKey(Food, on_delete=models.CASCADE)
+    animal_type = models.ForeignKey(AnimalType, on_delete=models.CASCADE, blank=True, null=True)
+    picture = models.FileField(blank=True, null=True)
+    food = models.ForeignKey(Food, on_delete=models.CASCADE, blank=True, null=True)
     owner = models.ManyToManyField(Owner, through='AnimalOwner')
 
     def __str__(self):
@@ -90,4 +94,4 @@ class AnimalOwner(models.Model):
     animal = models.ForeignKey(Animal, on_delete=models.CASCADE)
     owner = models.ForeignKey(Owner, on_delete=models.CASCADE)
     start = models.DateField()
-    end = models.DateField()
+    end = models.DateField(null=True)

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+<h2>Animal care</h2>
+<body>
+<table style="width:100%">
+  <tr>
+    <th>Type</th>
+    <th>Name</th>
+    <th>Drug</th>
+    <th>Date</th>
+  </tr>
+    {% for c in care %}
+  <tr>
+    <td>{{ c.type }}</td>
+    <td>{{ c.name }}</td>
+    <td>{{ c.drug }}</td>
+    <td>{{ c.date }}</td>
+  </tr>
+    {% endfor %}
+</table>
+<h3><a href="{% url 'add-care' %}">Add care</a></h3>
+</body>
+{% endblock %}

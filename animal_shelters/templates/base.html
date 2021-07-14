@@ -6,8 +6,18 @@
 </head>
 <body>
   <main>
-      <p><h2><a href="{% url 'home' %}">Animal Shelters</a></h2></p>
-      <h3><a href="{% url 'shelters' %}">Shelters list</a></h3>
+      {% if user.is_authenticated %}
+          <p><h2><a href="{% url 'home' %}">Animal Shelters</a></h2></p>
+          <h3><a href="{% url 'shelters' %}">Shelters list</a></h3>
+          <h3><a href="{% url 'type' %}">Animal types</a></h3>
+          <h3><a href="{% url 'owner-animals' %}">My animals</a></h3>
+          <h3><a href="{% url 'food' %}">Food</a></h3>
+          <h3><a href="{% url 'care' %}">Care</a></h3>
+      {% else %}
+          <p><h2><a href="{% url 'home' %}">Animal Shelters</a></h2></p>
+          <h3><a href="{% url 'shelters' %}">Shelters list</a></h3>
+          <h3><a href="{% url 'type' %}">Animal types</a></h3>
+      {% endif %}
     {% block content %}
     {% endblock %}
   </main>

@@ -3,11 +3,12 @@ from django.shortcuts import render
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views import generic, View
+from datetime import date
 
-from animal_shelters.forms import AccountForm, SheltersForm
+from animal_shelters.forms import AccountForm, SheltersForm, AddAnimalForm, AddFoodForm, AddTypeForm, AddCareForm
 
 # Create your views here.
-from animal_shelters.models import Owner, AnimalOwner, Animal
+from animal_shelters.models import Owner, AnimalOwner, Animal, Food, AnimalType, AnimalCare
 
 
 class SignUpView(generic.CreateView):
@@ -76,11 +77,146 @@ class SheltersView(View):
 
 
 class AddShelterAnimalsView(View):
-    pass
+    def get(self, request):
+        form = AddAnimalForm()
+        return render(request, 'add_animal_form.html', {'form': form})
+
+    def post(self, request):
+        form = AddAnimalForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            sex = form.cleaned_data['sex']
+            chip_number = form.cleaned_data['chip_number']
+            birth_date = form.cleaned_data['birth_date']
+            colour = form.cleaned_data['colour']
+            distinguishing_marks = form.cleaned_data['distinguishing_marks']
+            weight = form.cleaned_data['weight']
+            size = form.cleaned_data['size']
+            description = form.cleaned_data['description']
+            animal_type = form.cleaned_data['animal_type']
+            picture = form.cleaned_data['picture']
+            food = form.cleaned_data['food']
+            a = Animal.objects.create(name=name, sex=sex, chip_number=chip_number, birth_date=birth_date, colour=colour,
+                                      distinguishing_marks=distinguishing_marks, weight=weight, size=size,
+                                      description=description, animal_type_id=animal_type, picture=picture,
+                                      food_id=food)
+            AnimalOwner.objects.create(animal_id=a.id, owner_id=self.request.user.id, start=date.today())
+        return HttpResponseRedirect('/owner/animals')
+
+
+class EditShelterAnimalsView(View):
+    def get(self, request, animal_id):
+        animal = Animal.objects.get(id=animal_id)
+        form = AddAnimalForm(instance=animal)
+        return render(request, 'add_animal_form.html', {'form': form})
+
+    def post(self, request, animal_id):
+        form = AddAnimalForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            sex = form.cleaned_data['sex']
+            chip_number = form.cleaned_data['chip_number']
+            birth_date = form.cleaned_data['birth_date']
+            colour = form.cleaned_data['colour']
+            distinguishing_marks = form.cleaned_data['distinguishing_marks']
+            weight = form.cleaned_data['weight']
+            size = form.cleaned_data['size']
+            description = form.cleaned_data['description']
+            animal_type = form.cleaned_data['animal_type']
+            picture = form.cleaned_data['picture']
+            food = form.cleaned_data['food']
+            Animal.objects.filter(id=animal_id).update(name=name, sex=sex, chip_number=chip_number,
+                                                       birth_date=birth_date, colour=colour,
+                                                       distinguishing_marks=distinguishing_marks, weight=weight,
+                                                       size=size,
+                                                       description=description, animal_type_id=animal_type,
+                                                       picture=picture, food_id=food)
+        return HttpResponseRedirect('/owner/animals')
 
 
 class ShelterAnimalsView(View):
     def get(self, request, shelter_id):
-        t = Owner.objects.get(id=shelter_id)
-        animals = t.animal_set.all()
+        o = Owner.objects.get(id=shelter_id)
+        animals = o.animal_set.all()
         return render(request, 'shelter_animals.html', {'animals': animals})
+
+
+class OwnerAnimalsView(View):
+    def get(self, request):
+        if Owner.objects.filter(id=self.request.user.id).exists():
+            o = Owner.objects.get(id=self.request.user.id)
+            animals = o.animal_set.all()
+            return render(request, 'owner-animals.html', {'animals': animals})
+        else:
+            return render(request, 'no-animals.html')
+
+
+class FoodView(View):
+    def get(self, request):
+        foods = Food.objects.all()
+        return render(request, 'food.html', {'foods': foods})
+
+
+class AddFoodView(View):
+    def get(self, request):
+        form = AddFoodForm()
+        return render(request, 'add_food_form.html', {'form': form})
+
+    def post(self, request):
+        form = AddFoodForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            age_start = form.cleaned_data['age_start']
+            age_end = form.cleaned_data['age_end']
+            weight_start = form.cleaned_data['weight_start']
+            weight_end = form.cleaned_data['weight_end']
+            amount = form.cleaned_data['amount']
+            Food.objects.create(name=name, age_start=age_start, age_end=age_end, weight_start=weight_start,
+                                weight_end=weight_end, amount=amount)
+        return HttpResponseRedirect('/food')
+
+
+class AnimalTypeView(View):
+    def get(self, request):
+        types = AnimalType.objects.all()
+        return render(request, 'animal_type.html', {'types': types})
+
+
+class AddAnimalTypeView(View):
+    def get(self, request):
+        form = AddTypeForm()
+        return render(request, 'add_type_form.html', {'form': form})
+
+    def post(self, request):
+        form = AddTypeForm(request.POST)
+        if form.is_valid():
+            type = form.cleaned_data['type']
+            breed = form.cleaned_data['breed']
+            FCI_number = form.cleaned_data['FCI_number']
+            picture = form.cleaned_data['picture']
+            description = form.cleaned_data['description']
+            AnimalType.objects.create(type=type, breed=breed, FCI_number=FCI_number, picture=picture,
+                                      description=description)
+        return HttpResponseRedirect('/type')
+
+
+class CareView(View):
+    def get(self, request):
+        care = AnimalCare.objects.all()
+        return render(request, 'animal_care.html', {'care': care})
+
+
+class AddCareView(View):
+    def get(self, request):
+        form = AddCareForm()
+        return render(request, 'add_care_form.html', {'form': form})
+
+    def post(self, request):
+        form = AddCareForm(request.POST)
+        if form.is_valid():
+            type = form.cleaned_data['type']
+            name = form.cleaned_data['name']
+            drug = form.cleaned_data['drug']
+            date = form.cleaned_data['date']
+            AnimalCare.objects.create(type=type, name=name, drug=drug, date=date)
+        return HttpResponseRedirect('/care')
