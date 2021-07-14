@@ -16,7 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic.base import TemplateView
-from animal_shelters.views import SignUpView, AccountView, SheltersView, AddShelterAnimalsView, ShelterAnimalsView
+from animal_shelters.views import SignUpView, AccountView, SheltersView, AddShelterAnimalsView, ShelterAnimalsView, \
+    OwnerAnimalsView, EditShelterAnimalsView, FoodView, AddFoodView, AnimalTypeView, AddAnimalTypeView, CareView, \
+    AddCareView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,5 +28,13 @@ urlpatterns = [
     path('account', AccountView.as_view(), name='account'),
     path('shelters', SheltersView.as_view(), name='shelters'),
     path('shelter/animals/add', AddShelterAnimalsView.as_view(), name='add-shelter-animals'),
-    path('shelter/animals/<int:shelter_id>', ShelterAnimalsView.as_view(), name='shelter-animals')
+    path('shelter/animals/<int:shelter_id>', ShelterAnimalsView.as_view(), name='shelter-animals'),
+    path('owner/animals', OwnerAnimalsView.as_view(), name='owner-animals'),
+    path('owner/animals/edit/<int:animal_id>', EditShelterAnimalsView.as_view(), name='owner-animals-edit'),
+    path('food', FoodView.as_view(), name='food'),
+    path('food/add', AddFoodView.as_view(), name='add-food'),
+    path('type', AnimalTypeView.as_view(), name='type'),
+    path('type/add', AddAnimalTypeView.as_view(), name='add-type'),
+    path('care', CareView.as_view(), name='care'),
+    path('care/add', AddCareView.as_view(), name='add-care')
 ]
