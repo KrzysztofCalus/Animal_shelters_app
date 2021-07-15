@@ -46,7 +46,7 @@ tr:nth-child(even) {
     <td>{{ animal.size }}</td>
     <td>{{ animal.description }}</td>
     <td>{{ animal.animal_type }}</td>
-    <td>{{ animal.picture }}</td>
+    <td><img src="{{ animal.picture.url }}" alt="{{ animal.picture.name }}" height="200"></td>
   </tr>
     {% endfor %}
 </table>
