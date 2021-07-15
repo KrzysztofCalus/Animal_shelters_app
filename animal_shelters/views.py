@@ -113,6 +113,7 @@ class EditShelterAnimalsView(View):
     def post(self, request, animal_id):
         form = AddAnimalForm(request.POST, request.FILES)
         if form.is_valid():
+            form.save()
             name = form.cleaned_data['name']
             sex = form.cleaned_data['sex']
             chip_number = form.cleaned_data['chip_number']
@@ -188,8 +189,9 @@ class AddAnimalTypeView(View):
         return render(request, 'add_type_form.html', {'form': form})
 
     def post(self, request):
-        form = AddTypeForm(request.POST)
+        form = AddTypeForm(request.POST, request.FILES)
         if form.is_valid():
+            form.save()
             type = form.cleaned_data['type']
             breed = form.cleaned_data['breed']
             FCI_number = form.cleaned_data['FCI_number']
