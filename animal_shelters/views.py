@@ -82,7 +82,7 @@ class AddShelterAnimalsView(View):
         return render(request, 'add_animal_form.html', {'form': form})
 
     def post(self, request):
-        form = AddAnimalForm(request.POST)
+        form = AddAnimalForm(request.POST, request.FILES)
         if form.is_valid():
             name = form.cleaned_data['name']
             sex = form.cleaned_data['sex']
@@ -111,7 +111,7 @@ class EditShelterAnimalsView(View):
         return render(request, 'add_animal_form.html', {'form': form})
 
     def post(self, request, animal_id):
-        form = AddAnimalForm(request.POST)
+        form = AddAnimalForm(request.POST, request.FILES)
         if form.is_valid():
             name = form.cleaned_data['name']
             sex = form.cleaned_data['sex']

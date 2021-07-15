@@ -39,7 +39,7 @@ class Owner(models.Model):
 class AnimalType(models.Model):
     type = models.CharField(max_length=128)
     breed = models.CharField(max_length=128)
-    picture = models.FileField(null=True, blank=True)
+    picture = models.ImageField(null=True, blank=True, upload_to='images/')
     description = models.TextField()
     FCI_number = models.IntegerField()
 
@@ -71,7 +71,7 @@ class Animal(models.Model):
     size = models.CharField(max_length=128, choices=ANIMAL_SIZE)
     description = models.TextField()
     animal_type = models.ForeignKey(AnimalType, on_delete=models.CASCADE, blank=True, null=True)
-    picture = models.FileField(blank=True, null=True)
+    picture = models.ImageField(blank=True, null=True, upload_to='images/')
     food = models.ForeignKey(Food, on_delete=models.CASCADE, blank=True, null=True)
     owner = models.ManyToManyField(Owner, through='AnimalOwner')
 
