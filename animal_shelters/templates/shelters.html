@@ -38,6 +38,9 @@ tr:nth-child(even) {
     <th>Opening Hours</th>
     <th>Phone</th>
     <th>Email</th>
+    <th>About</th>
+    <th>Regulations</th>
+    <th>Donations</th>
   </tr>
     {% for shelter in shelters %}
   <tr>
@@ -49,6 +52,9 @@ tr:nth-child(even) {
     <td>{{ shelter.opening_hours }}</td>
     <td>{{ shelter.phone }}</td>
     <td>{{ shelter.email }}</td>
+    <td>{{ shelter.about }}</td>
+    <td>{{ shelter.regulations }}</td>
+    <td>{{ shelter.donations }}</td>
   </tr>
     {% endfor %}
 </table>

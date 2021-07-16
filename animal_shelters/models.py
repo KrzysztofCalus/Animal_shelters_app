@@ -41,10 +41,10 @@ class AnimalType(models.Model):
     breed = models.CharField(max_length=128)
     picture = models.ImageField(null=True, blank=True)
     description = models.TextField()
-    FCI_number = models.IntegerField()
+    breed_number = models.IntegerField()
 
     def __str__(self):
-        return f'Type: {self.type}; Breed: {self.breed}; FCI number: {self.FCI_number}'
+        return f'Type: {self.type}; Breed: {self.breed}; Breed number: {self.breed_number}'
 
 
 class Food(models.Model):
