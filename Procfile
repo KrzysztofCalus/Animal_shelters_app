@@ -1,0 +1,1 @@
+web: gunicorn CL_final_project.wsgi

@@ -12,12 +12,19 @@ from animal_shelters.models import Owner, AnimalOwner, Animal, Food, AnimalType,
 
 
 class SignUpView(generic.CreateView):
+    """
+    Signup for new users
+    """
     form_class = UserCreationForm
     success_url = reverse_lazy('login')
     template_name = 'registration/signup.html'
 
 
 class AccountView(View):
+    """
+    Checking if user already add account data if yes allowing to change if no allowing to add
+    """
+
     def get(self, request):
         if Owner.objects.filter(user_id=self.request.user.id).exists():
             account = Owner.objects.get(user_id=self.request.user.id)
@@ -61,6 +68,10 @@ class AccountView(View):
 
 
 class SheltersView(View):
+    """
+    Showing all shelters and allowing to search by 'city'
+    """
+
     def get(self, request):
         shelters = Owner.objects.filter(shelter=True)
         form = SheltersForm()
@@ -77,6 +88,10 @@ class SheltersView(View):
 
 
 class AddShelterAnimalsView(View):
+    """
+    Add animal data and assign to user which is creating
+    """
+
     def get(self, request):
         form = AddAnimalForm()
         return render(request, 'add_animal_form.html', {'form': form})
@@ -107,6 +122,10 @@ class AddShelterAnimalsView(View):
 
 
 class EditShelterAnimalsView(View):
+    """
+    Editing animal data
+    """
+
     def get(self, request, animal_id):
         animal = Animal.objects.get(id=animal_id)
         form = AddAnimalForm(instance=animal)
@@ -138,6 +157,10 @@ class EditShelterAnimalsView(View):
 
 
 class ShelterAnimalsView(View):
+    """
+    Showing animals in chosen shelter
+    """
+
     def get(self, request, shelter_id):
         o = Owner.objects.get(id=shelter_id)
         animals = o.animal_set.all()
@@ -145,6 +168,10 @@ class ShelterAnimalsView(View):
 
 
 class OwnerAnimalsView(View):
+    """
+    Showing animals assign to logged user
+    """
+
     def get(self, request):
         if Owner.objects.filter(user_id=self.request.user.id).exists():
             o = Owner.objects.get(user_id=self.request.user.id)
@@ -155,12 +182,20 @@ class OwnerAnimalsView(View):
 
 
 class FoodView(View):
+    """
+    Showing all added food's
+    """
+
     def get(self, request):
         foods = Food.objects.all()
         return render(request, 'food.html', {'foods': foods})
 
 
 class AddFoodView(View):
+    """
+    Allowing to add food data
+    """
+
     def get(self, request):
         form = AddFoodForm()
         return render(request, 'add_food_form.html', {'form': form})
@@ -180,12 +215,20 @@ class AddFoodView(View):
 
 
 class AnimalTypeView(View):
+    """
+    Showing all animal types
+    """
+
     def get(self, request):
         types = AnimalType.objects.all()
         return render(request, 'animal_type.html', {'types': types})
 
 
 class AddAnimalTypeView(View):
+    """
+    Allowing to add animal type
+    """
+
     def get(self, request):
         form = AddTypeForm()
         return render(request, 'add_type_form.html', {'form': form})
@@ -196,15 +239,19 @@ class AddAnimalTypeView(View):
             form.save()
             type = form.cleaned_data['type']
             breed = form.cleaned_data['breed']
-            FCI_number = form.cleaned_data['FCI_number']
+            breed_number = form.cleaned_data['breed_number']
             picture = form.cleaned_data['picture']
             description = form.cleaned_data['description']
-            AnimalType.objects.create(type=type, breed=breed, FCI_number=FCI_number, picture=picture,
+            AnimalType.objects.create(type=type, breed=breed, breed_number=breed_number, picture=picture,
                                       description=description)
         return HttpResponseRedirect('/type')
 
 
 class CareView(View):
+    """
+    Showing all care for indicated animal
+    """
+
     def get(self, request, animal_id):
         care = AnimalCare.objects.filter(animal_id=animal_id)
         return render(request, 'animal_care.html', {'care': care,
@@ -212,6 +259,10 @@ class CareView(View):
 
 
 class AddCareView(View):
+    """
+    Allowing to add animal care
+    """
+
     def get(self, request, animal_id):
         form = AddCareForm()
         return render(request, 'add_care_form.html', {'form': form})
