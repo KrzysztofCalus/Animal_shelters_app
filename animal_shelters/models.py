@@ -23,14 +23,14 @@ class Owner(models.Model):
     number = models.CharField(max_length=6)
     city = models.CharField(max_length=64)
     postal_code = models.CharField(max_length=6)
-    shelter = models.BooleanField()
-    capacity = models.PositiveIntegerField(blank=True)
-    opening_hours = models.TextField(blank=True)
     phone = models.PositiveIntegerField()
     email = models.EmailField()
-    about = models.TextField(blank=True)
-    regulations = models.TextField(blank=True)
-    donations = models.TextField(blank=True)
+    shelter = models.BooleanField()
+    capacity = models.PositiveIntegerField(blank=True, null=True)
+    opening_hours = models.TextField(blank=True)
+    about = models.TextField(blank=True, null=True)
+    regulations = models.TextField(blank=True, null=True)
+    donations = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.user
@@ -84,7 +84,7 @@ class AnimalCare(models.Model):
     name = models.CharField(max_length=128, blank=True)
     drug = models.CharField(max_length=128, blank=True)
     date = models.DateField()
-    animal = models.ManyToManyField(Animal)
+    animal = models.ForeignKey(Animal, on_delete=models.CASCADE, default=5)
 
     def __str__(self):
         return self.name

@@ -37,7 +37,7 @@ urlpatterns = [
     path('food/add', AddFoodView.as_view(), name='add-food'),
     path('type', AnimalTypeView.as_view(), name='type'),
     path('type/add', AddAnimalTypeView.as_view(), name='add-type'),
-    path('care', CareView.as_view(), name='care'),
-    path('care/add', AddCareView.as_view(), name='add-care')
+    path('care/<int:animal_id>', CareView.as_view(), name='care'),
+    path('care/add/<int:animal_id>', AddCareView.as_view(), name='add-care')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

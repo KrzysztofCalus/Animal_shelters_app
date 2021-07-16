@@ -33,6 +33,8 @@ tr:nth-child(even) {
     <th>Size</th>
     <th>Description</th>
     <th>Animal Type</th>
+    <th>Food</th>
+    <th>Care Plan</th>
     <th>Picture</th>
   </tr>
     {% for animal in animals %}
@@ -46,6 +48,8 @@ tr:nth-child(even) {
     <td>{{ animal.size }}</td>
     <td>{{ animal.description }}</td>
     <td>{{ animal.animal_type }}</td>
+    <td>{{ animal.food }}</td>
+    <td><a href="{% url 'care' animal_id=animal.id %}">Care plan</a></td>
     <td><img src="{{ animal.picture.url }}" alt="{{ animal.picture.name }}" height="200"></td>
   </tr>
     {% endfor %}

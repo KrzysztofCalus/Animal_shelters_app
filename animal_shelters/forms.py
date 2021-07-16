@@ -7,6 +7,8 @@ class AccountForm(forms.ModelForm):
     class Meta:
         model = Owner
         exclude = ['user']
+        labels = {
+            'shelter_name': 'Name and Surname / Shelter name'}
 
 
 class SheltersForm(forms.ModelForm):
@@ -36,4 +38,4 @@ class AddTypeForm(forms.ModelForm):
 class AddCareForm(forms.ModelForm):
     class Meta:
         model = AnimalCare
-        exclude = ['id']
+        exclude = ['id', 'animal']

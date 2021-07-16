@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% csrf_token %}
 <head>
 <style>
 table {
@@ -38,6 +39,7 @@ tr:nth-child(even) {
   </tr>
     {% endfor %}
 </table>
-<h3><a href="{% url 'add-care' %}">Add care</a></h3>
+<h3><a href="http://127.0.0.1:8000/care/add/{{ animal_id }}">Add care</a></h3>
+
 </body>
 {% endblock %}
