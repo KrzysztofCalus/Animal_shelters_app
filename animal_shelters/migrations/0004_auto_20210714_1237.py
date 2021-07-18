@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('animal_shelters', '0003_auto_20210714_1141'),
     ]
@@ -14,12 +13,16 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='animal',
             name='animal_type',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='animal_shelters.animaltype'),
+            field=models.ForeignKey(blank=True, null=True,
+                                    on_delete=django.db.models.deletion.CASCADE,
+                                    to='animal_shelters.animaltype'),
         ),
         migrations.AlterField(
             model_name='animal',
             name='food',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='animal_shelters.food'),
+            field=models.ForeignKey(blank=True, null=True,
+                                    on_delete=django.db.models.deletion.CASCADE,
+                                    to='animal_shelters.food'),
         ),
         migrations.AlterField(
             model_name='animal',

@@ -6,7 +6,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -17,15 +16,21 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Animal',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True, primary_key=True,
+                                           serialize=False,
+                                           verbose_name='ID')),
                 ('name', models.CharField(max_length=128)),
-                ('sex', models.CharField(choices=[('MALE', 'male'), ('FEMALE', 'female'), ('SEXLESS', 'sexless')], max_length=128)),
+                ('sex', models.CharField(choices=[('MALE', 'male'),
+                                                  ('FEMALE', 'female'),
+                                                  ('SEXLESS', 'sexless')], max_length=128)),
                 ('chip_number', models.PositiveIntegerField(blank=True)),
                 ('birth_date', models.DateField()),
                 ('colour', models.CharField(max_length=56)),
                 ('distinguishing_marks', models.CharField(max_length=256)),
                 ('weight', models.DecimalField(decimal_places=2, max_digits=4)),
-                ('size', models.CharField(choices=[('SMALL', 'small'), ('MEDIUM', 'medium'), ('LARGE', 'large')], max_length=128)),
+                ('size', models.CharField(choices=[('SMALL', 'small'),
+                                                   ('MEDIUM', 'medium'),
+                                                   ('LARGE', 'large')], max_length=128)),
                 ('description', models.TextField()),
                 ('picture', models.FileField(upload_to='')),
             ],
@@ -33,7 +38,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='AnimalType',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True, primary_key=True,
+                                           serialize=False,
+                                           verbose_name='ID')),
                 ('type', models.CharField(max_length=128)),
                 ('breed', models.CharField(max_length=128)),
                 ('picture', models.FileField(upload_to='')),
@@ -44,7 +51,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Food',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True, primary_key=True,
+                                           serialize=False,
+                                           verbose_name='ID')),
                 ('name', models.CharField(max_length=128)),
                 ('age_start', models.PositiveIntegerField()),
                 ('age_end', models.PositiveIntegerField()),
@@ -55,7 +64,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Owner',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True, primary_key=True,
+                                           serialize=False,
+                                           verbose_name='ID')),
                 ('street', models.CharField(max_length=256)),
                 ('number', models.CharField(max_length=6)),
                 ('city', models.CharField(max_length=64)),
@@ -68,23 +79,33 @@ class Migration(migrations.Migration):
                 ('about', models.TextField(blank=True)),
                 ('regulations', models.TextField(blank=True)),
                 ('donations', models.TextField(blank=True)),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('user', models.OneToOneField(
+                    on_delete=django.db.models.deletion.CASCADE,
+                    to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.CreateModel(
             name='AnimalOwner',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True, primary_key=True,
+                                           serialize=False,
+                                           verbose_name='ID')),
                 ('start', models.DateField()),
                 ('end', models.DateField()),
-                ('animal', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='animal_shelters.animal')),
-                ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='animal_shelters.owner')),
+                ('animal', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE,
+                    to='animal_shelters.animal')),
+                ('owner', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE,
+                    to='animal_shelters.owner')),
             ],
         ),
         migrations.CreateModel(
             name='AnimalCare',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True, primary_key=True,
+                                           serialize=False,
+                                           verbose_name='ID')),
                 ('type', models.CharField(max_length=128)),
                 ('name', models.CharField(blank=True, max_length=128)),
                 ('drug', models.CharField(blank=True, max_length=128)),
@@ -95,16 +116,21 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='animal',
             name='animal_type',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='animal_shelters.animaltype'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to='animal_shelters.animaltype'),
         ),
         migrations.AddField(
             model_name='animal',
             name='food',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='animal_shelters.food'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to='animal_shelters.food'),
         ),
         migrations.AddField(
             model_name='animal',
             name='owner',
-            field=models.ManyToManyField(through='animal_shelters.AnimalOwner', to='animal_shelters.Owner'),
+            field=models.ManyToManyField(through='animal_shelters.AnimalOwner',
+                                         to='animal_shelters.Owner'),
         ),
     ]

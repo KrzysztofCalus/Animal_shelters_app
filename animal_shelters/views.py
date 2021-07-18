@@ -5,10 +5,11 @@ from django.urls import reverse_lazy
 from django.views import generic, View
 from datetime import date
 
-from animal_shelters.forms import AccountForm, SheltersForm, AddAnimalForm, AddFoodForm, AddTypeForm, AddCareForm
+from .forms import AccountForm, SheltersForm, AddAnimalForm, AddFoodForm, \
+    AddTypeForm, AddCareForm
 
 # Create your views here.
-from animal_shelters.models import Owner, AnimalOwner, Animal, Food, AnimalType, AnimalCare
+from .models import Owner, AnimalOwner, Animal, Food, AnimalType, AnimalCare
 
 
 class SignUpView(generic.CreateView):
@@ -52,18 +53,17 @@ class AccountView(View):
             regulations = form.cleaned_data['regulations']
             donations = form.cleaned_data['donations']
             if Owner.objects.filter(user_id=self.request.user.id).exists():
-                Owner.objects.filter(user_id=self.request.user.id).update(user_id=user, street=street, number=number,
-                                                                          city=city, postal_code=postal_code,
-                                                                          shelter=shelter, capacity=capacity,
-                                                                          opening_hours=opening_hours, phone=phone,
-                                                                          email=email, about=about,
-                                                                          regulations=regulations, donations=donations,
-                                                                          shelter_name=shelter_name)
+                Owner.objects.filter(user_id=self.request.user.id).update(
+                    user_id=user, street=street, number=number, city=city, postal_code=postal_code,
+                    shelter=shelter, capacity=capacity, opening_hours=opening_hours, phone=phone,
+                    email=email, about=about, regulations=regulations, donations=donations,
+                    shelter_name=shelter_name)
             else:
-                Owner.objects.create(user_id=user, street=street, number=number, city=city, postal_code=postal_code,
-                                     shelter=shelter, capacity=capacity, opening_hours=opening_hours, phone=phone,
-                                     email=email, about=about, regulations=regulations, donations=donations,
-                                     shelter_name=shelter_name)
+                Owner.objects.create(
+                    user_id=user, street=street, number=number, city=city, postal_code=postal_code,
+                    shelter=shelter, capacity=capacity, opening_hours=opening_hours, phone=phone,
+                    email=email, about=about, regulations=regulations, donations=donations,
+                    shelter_name=shelter_name)
             return HttpResponseRedirect('account')
 
 
@@ -112,10 +112,11 @@ class AddShelterAnimalsView(View):
             animal_type = form.cleaned_data['animal_type']
             picture = form.cleaned_data['picture']
             food = form.cleaned_data['food']
-            a = Animal.objects.create(name=name, sex=sex, chip_number=chip_number, birth_date=birth_date, colour=colour,
-                                      distinguishing_marks=distinguishing_marks, weight=weight, size=size,
-                                      description=description, animal_type_id=animal_type.id, picture=picture,
-                                      food_id=food.id)
+            a = Animal.objects.create(
+                name=name, sex=sex, chip_number=chip_number, birth_date=birth_date, colour=colour,
+                distinguishing_marks=distinguishing_marks, weight=weight, size=size,
+                description=description, animal_type_id=animal_type.id, picture=picture,
+                food_id=food.id)
             owner = Owner.objects.get(user_id=self.request.user.id)
             AnimalOwner.objects.create(animal_id=a.id, owner_id=owner.id, start=date.today())
         return HttpResponseRedirect('/owner/animals')
@@ -147,12 +148,10 @@ class EditShelterAnimalsView(View):
             animal_type = form.cleaned_data['animal_type']
             picture = form.cleaned_data['picture']
             food = form.cleaned_data['food']
-            Animal.objects.filter(id=animal_id).update(name=name, sex=sex, chip_number=chip_number,
-                                                       birth_date=birth_date, colour=colour,
-                                                       distinguishing_marks=distinguishing_marks, weight=weight,
-                                                       size=size,
-                                                       description=description, animal_type_id=animal_type,
-                                                       picture=picture, food_id=food)
+            Animal.objects.filter(id=animal_id).update(
+                name=name, sex=sex, chip_number=chip_number, birth_date=birth_date, colour=colour,
+                distinguishing_marks=distinguishing_marks, weight=weight, size=size,
+                description=description, animal_type_id=animal_type, picture=picture, food_id=food)
         return HttpResponseRedirect('/owner/animals')
 
 
@@ -209,8 +208,9 @@ class AddFoodView(View):
             weight_start = form.cleaned_data['weight_start']
             weight_end = form.cleaned_data['weight_end']
             amount = form.cleaned_data['amount']
-            Food.objects.create(name=name, age_start=age_start, age_end=age_end, weight_start=weight_start,
-                                weight_end=weight_end, amount=amount)
+            Food.objects.create(
+                name=name, age_start=age_start, age_end=age_end, weight_start=weight_start,
+                weight_end=weight_end, amount=amount)
         return HttpResponseRedirect('/food')
 
 
@@ -242,8 +242,9 @@ class AddAnimalTypeView(View):
             breed_number = form.cleaned_data['breed_number']
             picture = form.cleaned_data['picture']
             description = form.cleaned_data['description']
-            AnimalType.objects.create(type=type, breed=breed, breed_number=breed_number, picture=picture,
-                                      description=description)
+            AnimalType.objects.create(
+                type=type, breed=breed, breed_number=breed_number, picture=picture,
+                description=description)
         return HttpResponseRedirect('/type')
 
 
@@ -274,5 +275,6 @@ class AddCareView(View):
             name = form.cleaned_data['name']
             drug = form.cleaned_data['drug']
             date = form.cleaned_data['date']
-            AnimalCare.objects.create(type=type, name=name, drug=drug, date=date, animal_id=animal_id)
+            AnimalCare.objects.create(
+                type=type, name=name, drug=drug, date=date, animal_id=animal_id)
         return HttpResponseRedirect(f'/care/{animal_id}')
