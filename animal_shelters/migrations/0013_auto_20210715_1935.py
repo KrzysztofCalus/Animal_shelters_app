@@ -18,6 +18,9 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='animalcare',
             name='animal',
-            field=models.ForeignKey(default=5, on_delete=django.db.models.deletion.CASCADE, to='animal_shelters.animal'),
+            field=models.ForeignKey(
+                default=5,
+                on_delete=django.db.models.deletion.CASCADE,
+                to='animal_shelters.animal'),
         ),
     ]
