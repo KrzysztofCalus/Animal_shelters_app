@@ -99,24 +99,7 @@ class AddShelterAnimalsView(View):
     def post(self, request):
         form = AddAnimalForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            name = form.cleaned_data['name']
-            sex = form.cleaned_data['sex']
-            chip_number = form.cleaned_data['chip_number']
-            birth_date = form.cleaned_data['birth_date']
-            colour = form.cleaned_data['colour']
-            distinguishing_marks = form.cleaned_data['distinguishing_marks']
-            weight = form.cleaned_data['weight']
-            size = form.cleaned_data['size']
-            description = form.cleaned_data['description']
-            animal_type = form.cleaned_data['animal_type']
-            picture = form.cleaned_data['picture']
-            food = form.cleaned_data['food']
-            a = Animal.objects.create(
-                name=name, sex=sex, chip_number=chip_number, birth_date=birth_date, colour=colour,
-                distinguishing_marks=distinguishing_marks, weight=weight, size=size,
-                description=description, animal_type_id=animal_type.id, picture=picture,
-                food_id=food.id)
+            a = form.save()
             owner = Owner.objects.get(user_id=self.request.user.id)
             AnimalOwner.objects.create(animal_id=a.id, owner_id=owner.id, start=date.today())
         return HttpResponseRedirect('/owner/animals')
@@ -133,25 +116,10 @@ class EditShelterAnimalsView(View):
         return render(request, 'add_animal_form.html', {'form': form})
 
     def post(self, request, animal_id):
-        form = AddAnimalForm(request.POST, request.FILES)
+        a = Animal.objects.get(id=animal_id)
+        form = AddAnimalForm(request.POST, request.FILES, instance=a)
         if form.is_valid():
             form.save()
-            name = form.cleaned_data['name']
-            sex = form.cleaned_data['sex']
-            chip_number = form.cleaned_data['chip_number']
-            birth_date = form.cleaned_data['birth_date']
-            colour = form.cleaned_data['colour']
-            distinguishing_marks = form.cleaned_data['distinguishing_marks']
-            weight = form.cleaned_data['weight']
-            size = form.cleaned_data['size']
-            description = form.cleaned_data['description']
-            animal_type = form.cleaned_data['animal_type']
-            picture = form.cleaned_data['picture']
-            food = form.cleaned_data['food']
-            Animal.objects.filter(id=animal_id).update(
-                name=name, sex=sex, chip_number=chip_number, birth_date=birth_date, colour=colour,
-                distinguishing_marks=distinguishing_marks, weight=weight, size=size,
-                description=description, animal_type_id=animal_type, picture=picture, food_id=food)
         return HttpResponseRedirect('/owner/animals')
 
 
@@ -237,14 +205,6 @@ class AddAnimalTypeView(View):
         form = AddTypeForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            type = form.cleaned_data['type']
-            breed = form.cleaned_data['breed']
-            breed_number = form.cleaned_data['breed_number']
-            picture = form.cleaned_data['picture']
-            description = form.cleaned_data['description']
-            AnimalType.objects.create(
-                type=type, breed=breed, breed_number=breed_number, picture=picture,
-                description=description)
         return HttpResponseRedirect('/type')
 
 
