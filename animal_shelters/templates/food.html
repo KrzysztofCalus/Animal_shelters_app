@@ -21,6 +21,7 @@ tr:nth-child(even) {
 </style>
 </head>
 <h2>Food list</h2>
+    <h4><a href="{% url 'add-food' %}">+ Add food</a></h4>
 <body>
 <table style="width:100%">
   <tr>
@@ -42,6 +43,5 @@ tr:nth-child(even) {
   </tr>
     {% endfor %}
 </table>
-<h3><a href="{% url 'add-food' %}">Add food</a></h3>
 </body>
 {% endblock %}
