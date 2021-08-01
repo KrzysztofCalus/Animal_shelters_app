@@ -22,6 +22,9 @@ tr:nth-child(even) {
 </style>
 </head>
 <h2>Animal types</h2>
+{% if user.is_authenticated %}
+      <h4><a href="{% url 'add-type' %}">+ Add type</a></h4>
+{% endif %}
 <body>
 <table style="width:100%">
   <tr>
@@ -41,8 +44,5 @@ tr:nth-child(even) {
   </tr>
     {% endfor %}
 </table>
-{% if user.is_authenticated %}
-  <h3><a href="{% url 'add-type' %}">Add type</a></h3>
-{% endif %}
 </body>
 {% endblock %}

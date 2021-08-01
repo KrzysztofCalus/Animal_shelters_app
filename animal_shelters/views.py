@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth.forms import UserCreationForm
@@ -134,7 +135,7 @@ class ShelterAnimalsView(View):
         return render(request, 'shelter_animals.html', {'animals': animals})
 
 
-class OwnerAnimalsView(View):
+class OwnerAnimalsView(LoginRequiredMixin, View):
     """
     Showing animals assign to logged user
     """
@@ -148,7 +149,7 @@ class OwnerAnimalsView(View):
             return render(request, 'no-animals.html')
 
 
-class FoodView(View):
+class FoodView(LoginRequiredMixin, View):
     """
     Showing all added food's
     """
@@ -158,7 +159,7 @@ class FoodView(View):
         return render(request, 'food.html', {'foods': foods})
 
 
-class AddFoodView(View):
+class AddFoodView(LoginRequiredMixin, View):
     """
     Allowing to add food data
     """
@@ -192,7 +193,7 @@ class AnimalTypeView(View):
         return render(request, 'animal_type.html', {'types': types})
 
 
-class AddAnimalTypeView(View):
+class AddAnimalTypeView(LoginRequiredMixin, View):
     """
     Allowing to add animal type
     """
@@ -208,7 +209,7 @@ class AddAnimalTypeView(View):
         return HttpResponseRedirect('/type')
 
 
-class CareView(View):
+class CareView(LoginRequiredMixin, View):
     """
     Showing all care for indicated animal
     """
@@ -219,7 +220,7 @@ class CareView(View):
                                                     'animal_id': animal_id})
 
 
-class AddCareView(View):
+class AddCareView(LoginRequiredMixin, View):
     """
     Allowing to add animal care
     """
